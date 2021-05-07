@@ -1,7 +1,7 @@
 // API keys and Passport configuration
 import * as passportConfig from "../config/passport";
 import express, { Request, Response} from "express";
-import {createUser, updateProfile,  deleteUser} from "../controllers/user.controller";
+import {createUser, updateProfile,  deleteUser} from "../services/user.services";
 
 const router = express.Router();
 
@@ -11,7 +11,7 @@ const router = express.Router();
  */
  router.post("/", (req: Request, res: Response) => {
     res.send("okay!");
-})
+});
 
 /**
  * Update profile information.
@@ -19,7 +19,7 @@ const router = express.Router();
  */
 router.put("/currentUser", (req: Request, res: Response) => {
     res.send("okay!");
-})
+});
 
 /**
  * Get profile information.
