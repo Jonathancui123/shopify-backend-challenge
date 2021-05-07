@@ -36,6 +36,7 @@
     "lodash": "4.17.20",
     "lusca": "1.6.1",
     "mongoose": "5.11.15",
+    "multer": "^1.4.2",
     "passport": "0.4.1",
     "passport-local": "1.0.0",
     "winston": "3.3.3"
@@ -53,6 +54,7 @@
     "@types/jest": "^26.0.23",
     "@types/lodash": "4.14.168",
     "@types/lusca": "1.6.2",
+    "@types/multer": "^1.4.5",
     "@types/node": "14.14.25",
     "@types/passport": "1.0.5",
     "@types/passport-local": "1.0.33",
