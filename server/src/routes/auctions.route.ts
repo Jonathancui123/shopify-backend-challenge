@@ -38,13 +38,12 @@ router.post(
 
       res.send(createdAuction);
     } catch (err) {
-      console.error(err.stack);
       next(err);
     }
   }
 );
 
-router.get("/", (req: Request, res: Response) => {
-  res.send("okay!");
+router.get("/current", (req: Request, res: Response) => {
+  // TODO: Provide a list of current auctions
 });
 export default router;
