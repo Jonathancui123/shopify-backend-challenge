@@ -1,9 +1,13 @@
 import { v4 as uuidv4 } from "uuid";
 import { Request, Response } from "express";
 import multer from "multer";
-import { uploadFileDirectory } from "../config/constants";
+import {
+  AUCTION_IMAGE_FORM_KEY,
+  uploadFileDirectory,
+} from "../config/constants";
 import fs from "fs";
 import path from "path";
+import logger from "../util/logger";
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -11,7 +15,11 @@ const storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     const generatedUuid = uuidv4();
-    cb(null, generatedUuid);
+    const fileExtension = file.originalname.split(".")[
+      file.originalname.split(".").length - 1
+    ];
+    const newFilename = generatedUuid + "." + fileExtension;
+    cb(null, newFilename);
   },
 });
 
@@ -29,30 +37,32 @@ const fileFilter = (req: any, file: any, cb: any) => {
   cb(null, true);
 };
 
-const receiveFile = multer({ storage, limits, fileFilter }).single(
-  "auction_image"
+export const receiveFile = multer({ storage, limits, fileFilter }).single(
+  AUCTION_IMAGE_FORM_KEY
 );
 
 export const receiveFileAsync = (req: Request, res: Response): Promise<any> => {
   return new Promise((resolve, reject) => {
-    const imageUploadCallback = (err: any) => {
+    // const imageUploadCallback =
+    receiveFile(req, res, function (err: any) {
+      req.file;
+
       if ((req as any).fileValidationError) {
         res.status(400);
         reject((req as any).fileValidationError);
       } else if (!req.file) {
         res.status(400);
-        reject("Please select an image to upload");
+        reject("400: Please select an image to upload");
       } else if (err instanceof multer.MulterError) {
         reject(err);
       } else if (err) {
         reject(err);
       }
       resolve("File received successfully");
-    };
-    receiveFile(req, res, imageUploadCallback);
+    });
   });
 };
 
 export const deleteFile = (filename: string): void => {
-  fs.rmSync(path.join(uploadFileDirectory, filename));
+  fs.unlinkSync(path.join(uploadFileDirectory, filename));
 };

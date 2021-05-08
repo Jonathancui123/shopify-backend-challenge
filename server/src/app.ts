@@ -1,4 +1,4 @@
-import express from "express";
+import express, { NextFunction } from "express";
 import compression from "compression"; // compresses requests
 import session from "express-session";
 import bodyParser from "body-parser";
@@ -11,6 +11,15 @@ import { MONGODB_URI, SESSION_SECRET } from "./util/secrets";
 
 import auctionsRouter from "./routes/auctions.route";
 import logger from "./util/logger";
+import { createUploadDir } from "./config/createUploadDir";
+
+// create the upload directory
+createUploadDir((err: any) => {
+  if (err) {
+    console.error(err);
+    console.error(`create upload directory err`);
+  }
+});
 
 // Create Express server
 const app = express();
@@ -73,9 +82,10 @@ app.use((req, res, next) => {
   next();
 });
 
+// app.use("/static", express.static(__dirname + "/public"));
+
 /**
  * Primary app routes.
  */
 app.use("/auctions", auctionsRouter);
-
 export default app;
