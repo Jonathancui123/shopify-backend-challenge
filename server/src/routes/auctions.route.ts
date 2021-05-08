@@ -12,11 +12,13 @@ import {
   validateCreateAuctionInput,
 } from "../services/auctions.services";
 import logger from "../util/logger";
+import { isAuthenticated } from "../config/passport";
 
 const router = express.Router();
 
 router.post(
   "/",
+  isAuthenticated,
   receiveFile,
   async (req: Request, res: Response, next: NextFunction) => {
     try {

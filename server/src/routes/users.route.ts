@@ -1,5 +1,5 @@
 // API keys and Passport configuration
-import * as passportConfig from "../config/passport";
+import { isAuthenticated } from "../config/passport";
 import express, { NextFunction, Request, Response } from "express";
 import { createUser, updateProfile, getUser } from "../services/user.services";
 
@@ -19,6 +19,7 @@ router.post("/", (req: Request, res: Response, next: NextFunction) => {
  */
 router.put(
   "/currentUser",
+  isAuthenticated,
   (req: Request, res: Response, next: NextFunction) => {
     updateProfile(req, res, next);
   }
@@ -30,6 +31,7 @@ router.put(
  */
 router.get(
   "/currentUser",
+  isAuthenticated,
   (req: Request, res: Response, next: NextFunction) => {
     getUser(req, res, next);
   }
