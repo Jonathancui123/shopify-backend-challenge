@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
-import { login, logout } from "../services/auth.services";
+import { login, logout } from "../services/auth.service";
 import { isAuthenticated } from "../config/passport";
 
 const router = express.Router();

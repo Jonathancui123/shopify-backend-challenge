@@ -1,16 +1,12 @@
 import express, { NextFunction, Request, Response } from "express";
-import {
-  receiveFileAsync,
-  deleteFile,
-  receiveFile,
-} from "../services/uploads.services";
+import { deleteFile, receiveFile } from "../services/uploads.service";
 import path from "path";
 import { uploadPublicS3 } from "../services/aws.service";
 import { uploadFileDirectory } from "../config/constants";
 import {
   createAuction,
   validateCreateAuctionInput,
-} from "../services/auctions.services";
+} from "../services/auctions.service";
 import logger from "../util/logger";
 import { isAuthenticated } from "../config/passport";
 
