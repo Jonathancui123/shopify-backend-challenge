@@ -10,6 +10,8 @@ import bluebird from "bluebird";
 import { MONGODB_URI, SESSION_SECRET } from "./util/secrets";
 
 import auctionsRouter from "./routes/auctions.route";
+import authRouter from "./routes/auth.route";
+import usersRouter from "./routes/users.route";
 import logger from "./util/logger";
 import { createUploadDir } from "./config/createUploadDir";
 
@@ -88,4 +90,7 @@ app.use((req, res, next) => {
  * Primary app routes.
  */
 app.use("/auctions", auctionsRouter);
+app.use("/auth", authRouter);
+app.use("/users", usersRouter);
+
 export default app;
