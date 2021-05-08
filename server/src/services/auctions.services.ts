@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { check, sanitize, validationResult } from "express-validator";
 import { NativeError } from "mongoose";
 import { Auction, AuctionDocument } from "../models/Auction";
+import { UserDocument } from "../models/User";
 
 export const validateCreateAuctionInput = async (
   req: Request,
@@ -16,7 +17,7 @@ export const createAuction = async (
   res: Response,
   imageSrc: string
 ): Promise<AuctionDocument> => {
-  const ownerId = (req.user as any).id;
+  const ownerId = (req.user as UserDocument).id;
   const auction = new Auction({
     name: req.body.name,
     description: req.body.description,
