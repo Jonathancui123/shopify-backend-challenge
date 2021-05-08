@@ -4,7 +4,7 @@
   <!-- <a href="https://github.com/othneildrew/Best-README-Template">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a> -->
-  <h3 align="center"> :label: :framed_picture: </h3>
+  <h1 align="center"> :label: :framed_picture: </h1>
 
   <h3 align="center">Invaluable Images</h3>
 
@@ -54,10 +54,10 @@ Inspired by charitable auction events, _Invaluable Images_ is a digital auction 
 
 #### (Backend) Features:
 
-- Image upload and storage
-- Create auctions and associate with images
-- Basic authentication for users
-- Create/update/delete user profiles
+- Image **upload** and **storage**
+- **Create auctions** and associate with images
+- Basic **authentication** for users
+- Create/update/delete user **profiles**
 
 #### In progress:
 
@@ -67,11 +67,11 @@ Inspired by charitable auction events, _Invaluable Images_ is a digital auction 
 
 ### Built With
 
-- Node/Express backend in Typescript
-- AWS S3 to store images
-- MongoDB/Mongoose for auction, bid, user information
-- Jest/Supertest for testing
-- Bcrypt/Passport for user authentication
+- **Node/Express** backend in Typescript
+- **AWS S3** to store images
+- **MongoDB/Mongoose** for auction, bid, user information
+- **Jest/Supertest** for testing
+- **Bcrypt/Passport** for user authentication
 
 Continued in [Acknowledgements](##acknowledgements).
 
@@ -122,3 +122,7 @@ Project Link: [https://github.com/Jonathancui123/shopify-backend-challenge](http
 <!-- ACKNOWLEDGEMENTS -->
 
 ## Acknowledgements
+
+I used [Microsoft's Typescript/Node Starter](https://github.com/microsoft/TypeScript-Node-Starter) to jumpstart user profile and user authentication functionalities
+
+[Multer](https://www.npmjs.com/package/multer) was also used to support image uploads
