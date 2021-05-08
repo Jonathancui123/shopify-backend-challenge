@@ -1,24 +1,21 @@
-import express, { Request, Response} from "express";
-import {login, logout} from "../services/auth.services";
+import express, { NextFunction, Request, Response } from "express";
+import { login, logout } from "../services/auth.services";
 
 const router = express.Router();
-
 
 /**
  * Sign out
  * @route GET /auth/logout
  */
-
- router.get("/logout", (req: Request, res: Response) => {
-    res.send("okay!");
+router.get("/logout", (req: Request, res: Response, next: NextFunction) => {
+  logout(req, res);
 });
 
 /**
  * Sign in using email and password.
  * @route POST /auth/login
  */
-
-router.post("/login", (req: Request, res: Response) => {
-    res.send("okay!");
+router.post("/login", (req: Request, res: Response, next: NextFunction) => {
+  login(req, res, next);
 });
 export default router;
