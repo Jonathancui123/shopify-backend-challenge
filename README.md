@@ -79,37 +79,49 @@ Continued in [Acknowledgements](##acknowledgements).
 
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+This repo holds both the frontend (in progress) and backend so that they are accessible at a single link.
+
+`/server` contains the node backend
+
+`/client` contains the react frontend
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-
-- npm
-  ```sh
-  npm install npm@latest -g
-  ```
+  - Node v12.18.0
+  - Typescript v3.9.5
+  - An available MongoDB cluster: a cluster was created for this project on [MongoDB Atlas](https://cloud.mongodb.com) but for local development you will need to start your own.
+  - [AWS S3 bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/create-bucket-overview.html) for image storage
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Clone the project
+```sh
+  git clone https://github.com/Jonathancui123/shopify-backend-challenge.git
+```
+2. Move into the server folder
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   cd server
    ```
-3. Install NPM packages
+3. Install NPM packages and development packages
    ```sh
    npm install
+   npm install --dev
    ```
-4. Enter your API in `config.js`
-   ```JS
-   const API_KEY = 'ENTER YOUR API';
-   ```
+4. Rename `.env.example` to `.env` and then enter environment variables for MongoDB and AWS as described
 
 <!-- CONTACT -->
 
 ### Testing
+
+We test with [Jest](https://jestjs.io/), [Supertest](https://www.npmjs.com/package/supertest) and [MongoDB memory server](https://github.com/nodkz/mongodb-memory-server) to simulate database calls. The mock database is configured in `jest-mongodb-config.js`. [Chai](https://www.chaijs.com/) is also used for the expect function.
+
+To run tests, simply run:
+
+```sh
+  npm run test
+```
+
+Coverage reports should be created as well.
 
 <!-- CONTACT -->
 
