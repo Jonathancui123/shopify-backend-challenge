@@ -95,9 +95,9 @@ This repo holds both the frontend (in progress) and backend so that they are acc
 ### Installation
 
 1. Clone the project
-```sh
+  ```sh
   git clone https://github.com/Jonathancui123/shopify-backend-challenge.git
-```
+  ```
 2. Move into the server folder
    ```sh
    cd server
@@ -107,7 +107,12 @@ This repo holds both the frontend (in progress) and backend so that they are acc
    npm install
    npm install --dev
    ```
-4. Rename `.env.example` to `.env` and then enter environment variables for MongoDB and AWS as described
+4. (Still within `/server`), rename `.env.example` to `.env` and then enter environment variables for MongoDB and AWS as described
+5. To build and start the app:
+   ```sh
+   npm run build
+   npm run serve
+   ```
 
 <!-- CONTACT -->
 
