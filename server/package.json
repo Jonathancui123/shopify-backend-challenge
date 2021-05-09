@@ -27,6 +27,7 @@
     "aws-sdk": "^2.902.0",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "1.19.0",
+    "chai": "^4.3.4",
     "compression": "1.7.4",
     "connect-mongo": "4.4.0",
     "dotenv": "8.2.0",
@@ -44,10 +45,12 @@
     "winston": "3.3.3"
   },
   "devDependencies": {
+    "@shelf/jest-mongodb": "^1.2.4",
     "@types/async": "^3.2.6",
     "@types/aws-sdk": "^2.7.0",
     "@types/bcrypt-nodejs": "0.0.31",
     "@types/body-parser": "1.19.0",
+    "@types/chai": "^4.2.18",
     "@types/compression": "1.7.0",
     "@types/errorhandler": "1.5.0",
     "@types/eslint": "7.2.6",

@@ -20,10 +20,10 @@ export const createUser = async (
 
   const errors = validationResult(req);
 
-  if (!errors.isEmpty()) {
-    // Error signing up
-    return res.redirect("/signup");
-  }
+  // if (!errors.isEmpty()) {
+  //   // Error signing up
+  //   return res.redirect("/signup");
+  // }
 
   const user = new User({
     email: req.body.email,
@@ -102,4 +102,5 @@ export const getUser = (
       return next(err);
     }
   });
+  res.send(user);
 };

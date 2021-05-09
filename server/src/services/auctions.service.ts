@@ -8,7 +8,7 @@ export const validateCreateAuctionInput = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  // Validate the input for creating an auction
+  // TODO: Validate the input for creating an auction
   return {};
 };
 
@@ -29,25 +29,23 @@ export const createAuction = async (
     closingDate: req.body.closingDate,
   });
 
-  Auction.findOne(
-    { name: req.body.name, ownerId },
-    (err: NativeError, existingAuction: AuctionDocument) => {
-      if (err) {
-        res.status(500);
-        throw Error("Database query error");
-      }
-      if (existingAuction) {
-        res.status(400);
-        throw Error("Auction with name already exists for user");
-      }
-      auction.save((err) => {
-        if (err) {
-          res.status(500);
-          throw Error("Database query error");
-        }
-      });
+  try {
+    const existingAuction = await Auction.findOne({
+      name: req.body.name,
+      ownerId,
+    });
+
+    if (existingAuction) {
+      res.status(400);
+      throw Error("Auction with name already exists for user");
     }
-  );
+    await auction.save();
+  } catch (err) {
+    if (err) {
+      res.status(500);
+      throw Error("Database query error");
+    }
+  }
 
   return auction;
 };
