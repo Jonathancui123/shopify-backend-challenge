@@ -6,6 +6,8 @@ import lusca from "lusca";
 import MongoStore from "connect-mongo";
 import mongoose from "mongoose";
 import passport from "passport";
+import morgan from "morgan";
+import cors from "cors";
 import bluebird from "bluebird";
 import { MONGODB_URI, SESSION_SECRET } from "./util/secrets";
 
@@ -13,7 +15,9 @@ import auctionsRouter from "./routes/auctions.route";
 import authRouter from "./routes/auth.route";
 import usersRouter from "./routes/users.route";
 import logger from "./util/logger";
+
 import { createUploadDir } from "./config/createUploadDir";
+import { CONFIG } from "./config/constants";
 
 // create the upload directory
 createUploadDir((err: any) => {
@@ -48,6 +52,8 @@ mongoose
 
 // Express configuration
 app.set("port", process.env.PORT || 3000);
+
+app.use(morgan("combined"));
 app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -64,26 +70,33 @@ app.use(
     }),
   })
 );
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(lusca.xframe("SAMEORIGIN"));
-app.use(lusca.xssProtection(true));
+var whitelist = [CONFIG.backendAddress, CONFIG.frontendAddress];
+var corsOptions = {
+  origin: function (origin: string, callback: any) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 app.use((req, res, next) => {
-  // After successful login, redirect back to the intended page
-  if (
-    !req.user &&
-    req.path !== "/login" &&
-    req.path !== "/signup" &&
-    !req.path.match(/^\/auth/) &&
-    !req.path.match(/\./)
-  ) {
-    req.session.returnTo = req.path;
-  } else if (req.user && req.path == "/account") {
-    req.session.returnTo = req.path;
-  }
+  res.set({
+    "Access-Control-Allow-Origin": CONFIG.frontendAddress,
+    "Access-Control-Allow-Headers":
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization, authentication",
+    "Access-Control-Allow-Methods": "GET, PUT, PATCH, POST, DELETE, OPTIONS",
+    "Access-Control-Allow-Credentials": true,
+  });
   next();
 });
 
+app.use(passport.initialize());
+app.use(passport.session());
 // app.use("/static", express.static(__dirname + "/public"));
 
 /**

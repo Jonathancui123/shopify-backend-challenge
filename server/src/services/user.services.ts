@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import { WriteError } from "mongodb";
 import { check, sanitize, validationResult } from "express-validator";
 import { CallbackError, NativeError } from "mongoose";
+import { CONFIG } from "../config/constants";
 
 export const createUser = async (
   req: Request,
@@ -12,9 +13,6 @@ export const createUser = async (
   await check("email", "Email is not valid").isEmail().run(req);
   await check("password", "Password must be at least 4 characters long")
     .isLength({ min: 4 })
-    .run(req);
-  await check("confirmPassword", "Passwords do not match")
-    .equals(req.body.password)
     .run(req);
   await sanitize("email").normalizeEmail({ gmail_remove_dots: false }).run(req);
 
@@ -28,6 +26,10 @@ export const createUser = async (
   const user = new User({
     email: req.body.email,
     password: req.body.password,
+    profile: {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+    },
   });
 
   User.findOne(
@@ -38,7 +40,7 @@ export const createUser = async (
       }
       if (existingUser) {
         // Account already exists
-        return res.redirect("/signup");
+        return res.status(200).end();
       }
       user.save((err) => {
         if (err) {
@@ -48,7 +50,7 @@ export const createUser = async (
           if (err) {
             return next(err);
           }
-          res.redirect("/");
+          return res.status(200).end();
         });
       });
     }
@@ -78,7 +80,7 @@ export const updateProfile = async (
       return next(err);
     }
     user.email = req.body.email || "";
-    user.profile.name = req.body.name || "";
+    user.profile.firstName = req.body.name || "";
     user.save((err: WriteError & CallbackError) => {
       if (err) {
         if (err.code === 11000) {
