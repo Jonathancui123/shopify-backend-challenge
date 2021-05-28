@@ -11,6 +11,8 @@ import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
@@ -59,23 +61,35 @@ export default function CreateAuction() {
   };
 
   const onSubmit = async (event: any) => {
+    event.preventDefault();
+    console.log(event);
+
+    const currentDate = new Date().getTime();
+    const closingDateString = new Date(
+      currentDate + parseInt(event.target[11].value) * 1000 * 60
+    ).toISOString();
+
     var bodyFormData = new FormData();
     bodyFormData.append("auction_image", files);
     bodyFormData.append("name", event.target[2].value);
     bodyFormData.append("description", event.target[4].value);
     bodyFormData.append("startingBid", event.target[7].value);
     bodyFormData.append("charity", event.target[9].value);
+    bodyFormData.append("closingDate", closingDateString);
 
-    event.preventDefault();
-    console.log(event);
     console.log(bodyFormData);
 
     try {
-      await axios.post(`${backendAddress}/auctions`, bodyFormData, {
-        headers: { "Content-Type": "multipart/form-data" },
-        withCredentials: true
-      });
-      // redirectToDashboard();
+      const result = await axios.post(
+        `${backendAddress}/auctions`,
+        bodyFormData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
+        }
+      );
+      console.log(result);
+      redirectToDashboard();
     } catch (err) {
       console.log(err);
     }
@@ -161,13 +175,20 @@ export default function CreateAuction() {
                 id="charity"
               />
             </Grid>
-            {/* <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
-              />
-            </Grid> */}
+            <Grid item xs={12}>
+              <FormControl variant="outlined" required fullWidth>
+                <InputLabel id="demo-simple-select-outlined-label">
+                  Duration
+                </InputLabel>
+                <Select label="Duration" name="duration">
+                  <MenuItem value={5}>5 minutes</MenuItem>
+                  <MenuItem value={60 * 24}>24 hours</MenuItem>
+                  <MenuItem value={60 * 24 * 7}>1 week</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
           </Grid>
+
           <Button
             type="submit"
             fullWidth

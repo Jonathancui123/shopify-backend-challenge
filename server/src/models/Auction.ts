@@ -18,13 +18,14 @@ const auctionSchema = new mongoose.Schema<AuctionDocument>(
   {
     name: String,
     description: String,
-    ownerId: String,
-    winnerId: String,
+    ownerId: String, // should be a ref to owner
+    winnerId: String, // should be a ref to the winner
     imageSrc: String,
 
+    // need and array of bids
     charity: String,
     startingBid: Number,
-    highestBid: Number,
+    highestBid: Number, // should be a ref to the highest bid
     closingDate: Date,
   },
   { timestamps: true }

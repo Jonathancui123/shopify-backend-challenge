@@ -5,6 +5,7 @@ import { uploadPublicS3 } from "../services/aws.service";
 import { uploadFileDirectory } from "../config/constants";
 import {
   createAuction,
+  getAllAuctions,
   validateCreateAuctionInput,
 } from "../services/auctions.service";
 import logger from "../util/logger";
@@ -13,33 +14,6 @@ const router = express.Router();
 
 router.post(
   "/",
-  function (req, res, next) {
-    logger.info("SESSION ID:");
-    logger.info(req.sessionID);
-    logger.info("SESSION:");
-    logger.info(req.session);
-    // passport.authenticate("local", function (err, user, info) {
-    //   logger.info(info);
-    //   if (err) {
-    //     return next(err);
-    //   }
-    //   if (!user) {
-    //     logger.info("NO USER FOUND");
-    //     return res.redirect("/login");
-    //   }
-    //   req.logIn(user, function (err) {
-    //     logger.info("USER:");
-    //     logger.info(user);
-    //     if (err) {
-    //       logger.info("LOGIN UNSUCCESSFUL");
-    //       return next(err);
-    //     }
-    //     logger.info("LOGIN UNSUCCESSFUL");
-    //     return res.redirect("/users/" + user.username);
-    //   });
-    // })(req, res, next);
-    next();
-  },
   receiveFile,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -66,7 +40,8 @@ router.post(
   }
 );
 
-router.get("/current", (req: Request, res: Response) => {
-  // TODO: Provide a list of current auctions
+router.get("/", async (req: Request, res: Response) => {
+  const allAuctions = await getAllAuctions();
+  res.send(allAuctions);
 });
 export default router;

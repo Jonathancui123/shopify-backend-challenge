@@ -51,3 +51,9 @@ export const createAuction = async (
 
   return auction;
 };
+
+export const getAllAuctions = async () => {
+  const filter = {};
+  const allAuctions = await Auction.find(filter).sort("-createdAt");
+  return allAuctions;
+};

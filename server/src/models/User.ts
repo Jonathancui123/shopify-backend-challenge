@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema<UserDocument>(
   {
     email: { type: String, unique: true },
     password: String,
-
+    // should have a ref to auctions and bids
     profile: {
       firstName: String,
       lastName: String,

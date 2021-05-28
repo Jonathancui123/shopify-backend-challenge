@@ -74,13 +74,11 @@ app.use(
 var whitelist = [CONFIG.backendAddress, CONFIG.frontendAddress];
 var corsOptions = {
   origin: function (origin: string, callback: any) {
-    callback(null, true);
-
-    // if (whitelist.indexOf(origin) !== -1) {
-    //   callback(null, true);
-    // } else {
-    //   callback(new Error("Not allowed by CORS"));
-    // }
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
   },
   credentials: true,
   optionsSuccessStatus: 200,
