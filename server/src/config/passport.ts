@@ -10,7 +10,7 @@ import { NativeError } from "mongoose";
 const LocalStrategy = passportLocal.Strategy;
 
 passport.serializeUser<any, any>((req, user, done) => {
-  done(undefined, user);
+  done(undefined, (user as any).id);
 });
 
 passport.deserializeUser((id, done) => {

@@ -15,7 +15,7 @@ import auctionsRouter from "./routes/auctions.route";
 import authRouter from "./routes/auth.route";
 import usersRouter from "./routes/users.route";
 import logger from "./util/logger";
-
+import cookieParser from "cookie-parser";
 import { createUploadDir } from "./config/createUploadDir";
 import { CONFIG } from "./config/constants";
 
@@ -55,6 +55,7 @@ app.set("port", process.env.PORT || 3000);
 
 app.use(morgan("combined"));
 app.use(compression());
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
@@ -73,11 +74,13 @@ app.use(
 var whitelist = [CONFIG.backendAddress, CONFIG.frontendAddress];
 var corsOptions = {
   origin: function (origin: string, callback: any) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
+    callback(null, true);
+
+    // if (whitelist.indexOf(origin) !== -1) {
+    //   callback(null, true);
+    // } else {
+    //   callback(new Error("Not allowed by CORS"));
+    // }
   },
   credentials: true,
   optionsSuccessStatus: 200,
@@ -88,16 +91,17 @@ app.use((req, res, next) => {
   res.set({
     "Access-Control-Allow-Origin": CONFIG.frontendAddress,
     "Access-Control-Allow-Headers":
-      "Origin, X-Requested-With, Content-Type, Accept, Authorization, authentication",
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization, authentication, Set-Cookie",
     "Access-Control-Allow-Methods": "GET, PUT, PATCH, POST, DELETE, OPTIONS",
     "Access-Control-Allow-Credentials": true,
+    "Access-Control-Expose-Headers": "*",
   });
   next();
 });
 
 app.use(passport.initialize());
 app.use(passport.session());
-// app.use("/static", express.static(__dirname + "/public"));
+app.use("/static", express.static(__dirname + "/public"));
 
 /**
  * Primary app routes.

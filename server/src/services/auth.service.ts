@@ -37,8 +37,7 @@ export const login = async (
           return next(err);
         }
         // Successful login
-        logger.info(user);
-        res.status(200).send(req.session.returnTo);
+        res.status(200).send(user);
       });
     }
   )(req, res, next);

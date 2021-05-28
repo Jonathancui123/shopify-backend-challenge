@@ -8,19 +8,44 @@ import {
   validateCreateAuctionInput,
 } from "../services/auctions.service";
 import logger from "../util/logger";
-import { isAuthenticated } from "../config/passport";
-
+import passport from "passport";
 const router = express.Router();
 
 router.post(
   "/",
-  isAuthenticated,
+  function (req, res, next) {
+    logger.info("SESSION ID:");
+    logger.info(req.sessionID);
+    logger.info("SESSION:");
+    logger.info(req.session);
+    // passport.authenticate("local", function (err, user, info) {
+    //   logger.info(info);
+    //   if (err) {
+    //     return next(err);
+    //   }
+    //   if (!user) {
+    //     logger.info("NO USER FOUND");
+    //     return res.redirect("/login");
+    //   }
+    //   req.logIn(user, function (err) {
+    //     logger.info("USER:");
+    //     logger.info(user);
+    //     if (err) {
+    //       logger.info("LOGIN UNSUCCESSFUL");
+    //       return next(err);
+    //     }
+    //     logger.info("LOGIN UNSUCCESSFUL");
+    //     return res.redirect("/users/" + user.username);
+    //   });
+    // })(req, res, next);
+    next();
+  },
   receiveFile,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await validateCreateAuctionInput(req, res);
 
-      console.log(req.file);
+      console.log(req.file.filename);
       // await receiveFileAsync(req, res);
 
       const imageFilename = req.file.filename;

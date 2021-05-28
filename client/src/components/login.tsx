@@ -72,9 +72,11 @@ export default function Login() {
     try {
       const result = await axios.post(
         `${backendAddress}/auth/login`,
-        formValues
+        formValues,
+        { withCredentials: true }
       );
-      redirectToDashboard();
+      console.log(result);
+      // redirectToDashboard();
     } catch (err) {
       console.log(err);
     }

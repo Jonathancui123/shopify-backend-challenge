@@ -8,6 +8,7 @@ import reportWebVitals from "./reportWebVitals";
 import Dashboard from "./components/dashboard";
 import Login from "./components/login";
 import Signup from "./components/signup";
+import CreateAuction from "./components/createAuction";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -16,6 +17,7 @@ ReactDOM.render(
         <Route path="/" exact component={Dashboard} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
+        <Route path="/create" component={CreateAuction} />
       </Switch>
     </Router>
   </React.StrictMode>,

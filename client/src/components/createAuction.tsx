@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import InputAdornment from "@material-ui/core/InputAdornment";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
@@ -14,6 +18,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import { DropzoneArea } from "material-ui-dropzone";
 import constants from "../constants";
 const { backendAddress, frontendAddress } = constants;
 
@@ -37,31 +42,39 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp() {
+export default function CreateAuction() {
   const history = useHistory();
-
+  const [files, setFiles] = useState(new Blob());
   const classes = useStyles();
 
   const redirectToDashboard = () => {
     history.push("/");
   };
 
+  const onDropFiles = (droppedFiles: any) => {
+    console.log(typeof droppedFiles);
+    console.log(droppedFiles);
+
+    setFiles(droppedFiles[0]);
+  };
+
   const onSubmit = async (event: any) => {
+    var bodyFormData = new FormData();
+    bodyFormData.append("auction_image", files);
+    bodyFormData.append("name", event.target[2].value);
+    bodyFormData.append("description", event.target[4].value);
+    bodyFormData.append("startingBid", event.target[7].value);
+    bodyFormData.append("charity", event.target[9].value);
+
     event.preventDefault();
     console.log(event);
-    const formValues = {
-      firstName: event.target[0].value,
-      lastName: event.target[2].value,
-      email: event.target[4].value,
-      password: event.target[6].value,
-    };
-    console.log(formValues);
+    console.log(bodyFormData);
 
     try {
-      const result = await axios.post(`${backendAddress}/users`, formValues, {
-        withCredentials: true,
+      await axios.post(`${backendAddress}/auctions`, bodyFormData, {
+        headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true
       });
-      console.log(result);
       // redirectToDashboard();
     } catch (err) {
       console.log(err);
@@ -76,54 +89,76 @@ export default function SignUp() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+          Create a new auction
         </Typography>
-        <form className={classes.form} noValidate onSubmit={onSubmit}>
+        <form className={classes.form} onSubmit={onSubmit}>
+          <div style={{ padding: "10px 0px" }}>
+            <DropzoneArea
+              onDrop={onDropFiles}
+              acceptedFiles={["image/*"]}
+              filesLimit={1}
+              maxFileSize={10000000}
+              dropzoneText={"Drag and drop an image here or click"}
+              onChange={(files) => console.log("Files:", files)}
+            />
+          </div>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
-                autoComplete="fname"
-                name="firstName"
+                autoComplete="title"
+                name="title"
                 variant="outlined"
                 required
                 fullWidth
-                id="firstName"
-                label="First Name"
+                id="title"
+                label="Title of the Piece"
                 autoFocus
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
                 variant="outlined"
                 required
+                multiline={true}
+                rowsMax={7}
                 fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
+                id="description"
+                label="Art Description"
+                name="description"
+                autoComplete="description"
               />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControl
+                required
+                fullWidth
+                // className={classes.margin}
+                variant="outlined"
+              >
+                <InputLabel htmlFor="outlined-adornment-amount">
+                  Starting Bid
+                </InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-amount"
+                  // value={values.amount}
+                  // onChange={handleChange("amount")}
+                  type="number"
+                  startAdornment={
+                    <InputAdornment position="start">$</InputAdornment>
+                  }
+                  labelWidth={60}
+                />
+              </FormControl>
             </Grid>
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
+                name="charity"
+                label="Which charity are you supporting?"
+                type="charity"
+                id="charity"
               />
             </Grid>
             {/* <Grid item xs={12}>
@@ -140,12 +175,12 @@ export default function SignUp() {
             color="primary"
             className={classes.submit}
           >
-            Sign Up
+            Create Auction
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
-                Already have an account? Sign in
+              <Link href="/" variant="body2">
+                Return to dashboard
               </Link>
             </Grid>
           </Grid>

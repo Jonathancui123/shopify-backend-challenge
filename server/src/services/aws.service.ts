@@ -22,6 +22,7 @@ export const uploadPublicS3 = (
     Bucket: PUBLIC_S3_BUCKET_NAME,
     Key: filename,
     Body: fileContent,
+    ACL: "public-read",
   };
 
   return new Promise((resolve, reject) => {
