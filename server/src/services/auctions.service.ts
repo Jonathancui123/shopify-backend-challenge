@@ -19,11 +19,12 @@ export const createAuction = async (
   imageSrc: string
 ): Promise<AuctionDocument> => {
   const ownerId = (req.user as any).id;
+
   logger.info(req.body);
   const auction = new Auction({
     name: req.body.name,
     description: req.body.description,
-    ownerId,
+    owner: ownerId,
     imageSrc,
 
     charity: req.body.charity,

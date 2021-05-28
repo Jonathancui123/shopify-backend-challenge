@@ -4,10 +4,10 @@ import mongoose, { Date } from "mongoose";
 export type AuctionDocument = mongoose.Document & {
   name: string;
   description: string;
-  ownerId: string;
-  winnerId: string;
+  owner: mongoose.Schema.Types.ObjectId;
+  winner: mongoose.Schema.Types.ObjectId;
   imageSrc: string;
-
+  bids: Array<mongoose.Schema.Types.ObjectId>;
   charity: string;
   startingBid: number;
   highestBid: number;
@@ -16,17 +16,48 @@ export type AuctionDocument = mongoose.Document & {
 
 const auctionSchema = new mongoose.Schema<AuctionDocument>(
   {
-    name: String,
-    description: String,
-    ownerId: String, // should be a ref to owner
-    winnerId: String, // should be a ref to the winner
-    imageSrc: String,
+    name: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    winner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    imageSrc: {
+      type: String,
+      required: true,
+    },
+
+    bids: [{ type: mongoose.Schema.Types.ObjectId, ref: "Bid" }],
 
     // need and array of bids
-    charity: String,
-    startingBid: Number,
-    highestBid: Number, // should be a ref to the highest bid
-    closingDate: Date,
+    highestBid: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Bid",
+    }, // should be a ref to the highest bid
+
+    charity: {
+      type: String,
+      required: true,
+    },
+    startingBid: {
+      type: Number,
+      required: true,
+    },
+    closingDate: {
+      type: Date,
+      required: true,
+    },
   },
   { timestamps: true }
 );

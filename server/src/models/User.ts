@@ -10,6 +10,8 @@ export type UserDocument = mongoose.Document & {
     lastName: string;
   };
 
+  bids: Array<mongoose.Schema.Types.ObjectId>;
+
   comparePassword: comparePasswordFunction;
 };
 
@@ -21,11 +23,20 @@ type comparePasswordFunction = (
 const userSchema = new mongoose.Schema<UserDocument>(
   {
     email: { type: String, unique: true },
-    password: String,
+    password: {
+      type: String,
+      required: true,
+    },
     // should have a ref to auctions and bids
     profile: {
-      firstName: String,
-      lastName: String,
+      firstName: {
+        type: String,
+        required: true,
+      },
+      lastName: {
+        type: String,
+        required: true,
+      },
     },
   },
   { timestamps: true }
