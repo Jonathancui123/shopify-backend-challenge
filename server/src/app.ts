@@ -22,6 +22,8 @@ import cookieParser from "cookie-parser";
 import { createUploadDir } from "./config/createUploadDir";
 import { CONFIG } from "./config/constants";
 
+logger.info(`NODE_ENV ${process.env.NODE_ENV}`);
+
 // create the upload directory
 createUploadDir((err: any) => {
   if (err) {
