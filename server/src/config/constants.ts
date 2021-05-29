@@ -1,6 +1,11 @@
 import path from "path";
 export const uploadFileDirectory = path.join(__dirname, "../", "/tmp/uploads");
 export const AUCTION_IMAGE_FORM_KEY = "auction_image";
+export const pathToWatermark = path.join(
+  __dirname,
+  "../",
+  "/public/sample.png"
+);
 
 const PROD = {
   frontendAddress: process.env.FRONTEND_ADDRESS,

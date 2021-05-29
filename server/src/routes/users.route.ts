@@ -30,10 +30,13 @@ router.put(
  * @route GET /users/currentUser
  */
 router.get(
-  "/currentUser",
-  isAuthenticated,
+  "/currentUser/profile",
   (req: Request, res: Response, next: NextFunction) => {
-    getUser(req, res, next);
+    if (req.user) {
+      res.send((req.user as any).profile);
+    } else {
+      res.status(400).send("not authenticated");
+    }
   }
 );
 

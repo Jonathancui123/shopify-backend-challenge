@@ -13,6 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Link from "@material-ui/core/Link";
+import AccountCircle from "@material-ui/icons/AccountCircle";
 
 import ImageZoom from "react-medium-image-zoom";
 
@@ -35,6 +36,9 @@ function Copyright() {
 }
 
 const useStyles = makeStyles((theme) => ({
+  title: {
+    flexGrow: 1,
+  },
   icon: {
     marginRight: theme.spacing(2),
   },
@@ -55,9 +59,12 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
   },
   cardMedia: {
-    display: "flex",
-    justifyContent: "center",
+    // display: "flex",
+    // justifyContent: "center",
+    // height: "350px",
+    position: "relative",
     height: "350px",
+    overflow: "hidden",
   },
   cardContent: {
     flexGrow: 1,
@@ -70,6 +77,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
   const [auctions, setAuctions] = useState<Array<any>>([]);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [user, setUser] = useState<{ firstName: string; lastName: string }>({
+    firstName: "",
+    lastName: "",
+  });
   const classes = useStyles();
 
   useEffect(() => {
@@ -80,15 +92,49 @@ export default function Dashboard() {
     });
   }, []);
 
+  useEffect(() => {
+    axios
+      .get(`${backendAddress}/users/currentUser/profile`, {
+        withCredentials: true,
+      })
+      .then((res) => res.data)
+      .then((userProfile) => {
+        setLoggedIn(true);
+        setUser(userProfile);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   return (
     <React.Fragment>
       <CssBaseline />
       <AppBar position="relative">
         <Toolbar>
-          <CameraIcon className={classes.icon} />
-          <Typography variant="h6" color="inherit" noWrap>
-            Album layout
+          <Typography
+            variant="h6"
+            color="inherit"
+            noWrap
+            className={classes.title}
+          >
+            Biddify
           </Typography>
+          {loggedIn ? (
+            <>
+              <AccountCircle style={{ marginRight: "5px" }} />
+              {user.firstName} {user.lastName}
+            </>
+          ) : (
+            <>
+              <Button color="inherit" href="/signup">
+                Sign up
+              </Button>
+              <Button color="inherit" href="/login">
+                Login
+              </Button>
+            </>
+          )}
         </Toolbar>
       </AppBar>
       <main>
@@ -102,7 +148,7 @@ export default function Dashboard() {
               color="textPrimary"
               gutterBottom
             >
-              Album layout
+              Biddify
             </Typography>
             <Typography
               variant="h5"
@@ -141,7 +187,22 @@ export default function Dashboard() {
                       image={{
                         src: auction.imageSrc,
                         alt: auction.name,
-                        style: { maxHeight: "100%" },
+                        style: {
+                          display: "inline-block",
+                          maxWidth:
+                            "100%" /* You can use different numbers for max-width and max-height! */,
+                          maxHeight: "100%",
+                          width: "auto",
+                          height: "auto",
+
+                          position: "absolute",
+                          left: "50%" /* This sets left top corner of the image to the center of the block... */,
+                          top: "50%" /* This can be set also to bottom: 0; for aligning image to bottom line. Only translateX is used then. */,
+                          // -webkit-transform: "translate(-50%,-50%)", /* ...and this moves the image 50 % of its width and height back. */
+                          // -ms-transform: "translate(-50%,-50%)",
+                          // -o-transform: "translate(-50%,-50%)",
+                          transform: "translate(-50%,-50%)",
+                        },
                       }}
                       zoomImage={{
                         src: auction.imageSrc,

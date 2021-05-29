@@ -15,9 +15,8 @@ const storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     const generatedUuid = uuidv4();
-    const fileExtension = file.originalname.split(".")[
-      file.originalname.split(".").length - 1
-    ];
+    const fileExtension =
+      file.originalname.split(".")[file.originalname.split(".").length - 1];
     const newFilename = generatedUuid + "." + fileExtension;
     cb(null, newFilename);
   },
@@ -40,28 +39,6 @@ const fileFilter = (req: any, file: any, cb: any) => {
 export const receiveFile = multer({ storage, limits, fileFilter }).single(
   AUCTION_IMAGE_FORM_KEY
 );
-
-export const receiveFileAsync = (req: Request, res: Response): Promise<any> => {
-  return new Promise((resolve, reject) => {
-    // const imageUploadCallback =
-    receiveFile(req, res, function (err: any) {
-      req.file;
-
-      if ((req as any).fileValidationError) {
-        res.status(400);
-        reject((req as any).fileValidationError);
-      } else if (!req.file) {
-        res.status(400);
-        reject("400: Please select an image to upload");
-      } else if (err instanceof multer.MulterError) {
-        reject(err);
-      } else if (err) {
-        reject(err);
-      }
-      resolve("File received successfully");
-    });
-  });
-};
 
 export const deleteFile = (filename: string): void => {
   fs.unlinkSync(path.join(uploadFileDirectory, filename));

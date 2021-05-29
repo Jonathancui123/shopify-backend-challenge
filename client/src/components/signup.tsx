@@ -62,7 +62,7 @@ export default function SignUp() {
         withCredentials: true,
       });
       console.log(result);
-      // redirectToDashboard();
+      redirectToDashboard();
     } catch (err) {
       console.log(err);
     }

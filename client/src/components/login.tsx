@@ -76,7 +76,7 @@ export default function Login() {
         { withCredentials: true }
       );
       console.log(result);
-      // redirectToDashboard();
+      redirectToDashboard();
     } catch (err) {
       console.log(err);
     }

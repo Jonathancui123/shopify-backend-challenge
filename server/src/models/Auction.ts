@@ -40,11 +40,10 @@ const auctionSchema = new mongoose.Schema<AuctionDocument>(
 
     bids: [{ type: mongoose.Schema.Types.ObjectId, ref: "Bid" }],
 
-    // need and array of bids
     highestBid: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Bid",
-    }, // should be a ref to the highest bid
+    },
 
     charity: {
       type: String,
