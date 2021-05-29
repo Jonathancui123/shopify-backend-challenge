@@ -14,7 +14,10 @@ import { MONGODB_URI, SESSION_SECRET } from "./util/secrets";
 import auctionsRouter from "./routes/auctions.route";
 import authRouter from "./routes/auth.route";
 import usersRouter from "./routes/users.route";
+import bidsRouter from "./routes/bids.route";
+
 import logger from "./util/logger";
+
 import cookieParser from "cookie-parser";
 import { createUploadDir } from "./config/createUploadDir";
 import { CONFIG } from "./config/constants";
@@ -33,6 +36,7 @@ const app = express();
 // Connect to MongoDB
 const mongoUrl = MONGODB_URI;
 mongoose.Promise = bluebird;
+mongoose.set("useFindAndModify", false);
 
 mongoose
   .connect(mongoUrl, {
@@ -107,5 +111,6 @@ app.use("/static", express.static(__dirname + "/public"));
 app.use("/auctions", auctionsRouter);
 app.use("/auth", authRouter);
 app.use("/users", usersRouter);
+app.use("/bids", bidsRouter);
 
 export default app;

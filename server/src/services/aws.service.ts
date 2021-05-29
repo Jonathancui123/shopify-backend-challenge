@@ -67,3 +67,13 @@ export const uploadPublicS3 = (
     );
   });
 };
+
+export const getPresignedUrl = async (fileName: string) => {
+  const presignUrlParams = {
+    Bucket: PRIVATE_S3_BUCKET_NAME,
+    Key: fileName,
+    Expires: 60,
+  };
+
+  return s3.getSignedUrlPromise("getObject", presignUrlParams);
+};

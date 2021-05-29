@@ -40,6 +40,6 @@ export const receiveFile = multer({ storage, limits, fileFilter }).single(
   AUCTION_IMAGE_FORM_KEY
 );
 
-export const deleteFile = (filename: string): void => {
+export const deleteFileFromUploadDirectory = (filename: string): void => {
   fs.unlinkSync(path.join(uploadFileDirectory, filename));
 };

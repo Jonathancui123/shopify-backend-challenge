@@ -7,6 +7,8 @@ export type AuctionDocument = mongoose.Document & {
   owner: mongoose.Schema.Types.ObjectId;
   winner: mongoose.Schema.Types.ObjectId;
   imageSrc: string;
+  baseFileName: string;
+  privateImageSrc: string;
   bids: Array<mongoose.Schema.Types.ObjectId>;
   charity: string;
   startingBid: number;
@@ -36,6 +38,14 @@ const auctionSchema = new mongoose.Schema<AuctionDocument>(
     imageSrc: {
       type: String,
       required: true,
+    },
+    baseFileName: {
+      type: String,
+      required: true,
+    },
+    privateImageSrc: {
+      type: String,
+      default: "",
     },
 
     bids: [{ type: mongoose.Schema.Types.ObjectId, ref: "Bid" }],

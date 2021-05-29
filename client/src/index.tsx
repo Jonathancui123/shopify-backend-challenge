@@ -9,6 +9,7 @@ import Dashboard from "./components/dashboard";
 import Login from "./components/login";
 import Signup from "./components/signup";
 import CreateAuction from "./components/createAuction";
+import MyAuctions from "./components/myAuctions";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -18,6 +19,7 @@ ReactDOM.render(
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         <Route path="/create" component={CreateAuction} />
+        <Route path="/myauctions" component={MyAuctions} />
       </Switch>
     </Router>
   </React.StrictMode>,

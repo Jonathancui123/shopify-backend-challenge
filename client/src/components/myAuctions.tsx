@@ -14,7 +14,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Link from "@material-ui/core/Link";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import ImageZoom from "react-medium-image-zoom";
 
 import axios from "axios";
@@ -37,9 +37,6 @@ function Copyright() {
 
 const useStyles = makeStyles((theme) => ({
   title: {
-    flexGrow: 1,
-  },
-  price: {
     flexGrow: 1,
   },
   icon: {
@@ -78,18 +75,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Dashboard() {
+export default function MyAuctions() {
   const [auctions, setAuctions] = useState<Array<any>>([]);
   const [loggedIn, setLoggedIn] = useState(false);
   const [user, setUser] = useState<any>();
+
   const classes = useStyles();
 
   useEffect(() => {
-    axios.get(`${backendAddress}/auctions`).then((auctionsValue) => {
-      const auctions = auctionsValue.data as unknown;
-      console.log(auctions);
-      setAuctions(auctions as Array<any>);
-    });
+    axios
+      .get(`${backendAddress}/users/currentUser/auctions`, {
+        withCredentials: true,
+      })
+      .then((auctionsValue) => {
+        const auctions = auctionsValue.data as unknown;
+        console.log(auctions);
+        setAuctions(auctions as Array<any>);
+      });
   }, []);
 
   useEffect(() => {
@@ -107,38 +109,17 @@ export default function Dashboard() {
       });
   }, []);
 
-  const handleBid = async (auction: any, bidAmount: number) => {
-    try {
-      const result = await axios.post(
-        `${backendAddress}/bids`,
-        {
-          auction: auction._id,
-          bidder: user._id,
-          bidAmount,
-        },
-        {
-          withCredentials: true,
-        }
-      );
-      console.log(result);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   return (
     <React.Fragment>
       <CssBaseline />
       <AppBar position="relative">
         <Toolbar>
-          <Typography
-            variant="h6"
-            color="inherit"
-            noWrap
-            className={classes.title}
-          >
-            Biddify
-          </Typography>
+          {/* <Typography variant="h6" color="inherit" noWrap></Typography> */}
+          <Button color="inherit" href="/">
+            <ArrowBackIcon />
+          </Button>
+          <div className={classes.title}></div>
+
           {loggedIn ? (
             <>
               <AccountCircle style={{ marginRight: "5px" }} />
@@ -167,7 +148,7 @@ export default function Dashboard() {
               color="textPrimary"
               gutterBottom
             >
-              Biddify
+              My Auctions
             </Typography>
             <Typography
               variant="h5"
@@ -175,32 +156,16 @@ export default function Dashboard() {
               color="textSecondary"
               paragraph
             >
-              Something short and leading about the collection below—its
-              contents, the creator, etc. Make it short and sweet, but not too
-              short so folks don&apos;t simply skip over it entirely.
+              View and manage auctions - without any watermarks!
             </Typography>
             <div className={classes.heroButtons}>
               <Grid container spacing={2} justify="center">
                 <Grid item>
-                  <Button
-                    variant="contained"
-                    disabled={!loggedIn}
-                    color="primary"
-                    href="/create"
-                  >
-                    Create Auction
+                  <Button variant="contained" color="primary" href="/create">
+                    Create Another Auction
                   </Button>
                 </Grid>
-                <Grid item>
-                  <Button
-                    variant="outlined"
-                    disabled={!loggedIn}
-                    color="primary"
-                    href="/myauctions"
-                  >
-                    My Auctions
-                  </Button>
-                </Grid>
+                <Grid item></Grid>
               </Grid>
             </div>
           </Container>
@@ -222,7 +187,7 @@ export default function Dashboard() {
                     >
                       <ImageZoom
                         image={{
-                          src: auction.imageSrc,
+                          src: auction.privateImageSrc,
                           alt: auction.name,
                           style: {
                             display: "inline-block",
@@ -242,7 +207,7 @@ export default function Dashboard() {
                           },
                         }}
                         zoomImage={{
-                          src: auction.imageSrc,
+                          src: auction.privateImageSrc,
                           alt: auction.name,
                         }}
                       />
@@ -265,18 +230,6 @@ export default function Dashboard() {
                       <Typography component="h5" className="price">
                         ${currentBid}
                       </Typography>
-                      {loggedIn && (
-                        <Button
-                          size="small"
-                          variant="outlined"
-                          color="primary"
-                          onClick={() => {
-                            handleBid(auction, bidAmount);
-                          }}
-                        >
-                          Bid ${bidAmount}
-                        </Button>
-                      )}
                     </CardActions>
                   </Card>
                 </Grid>

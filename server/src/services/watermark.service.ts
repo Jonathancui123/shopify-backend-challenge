@@ -31,14 +31,8 @@ export const createWatermarkedFile = async (
   const Y = (image.bitmap.height - logo.bitmap.height) / 2;
 
   const result = await image
-    .composite(logo, X, Y, {
-      mode: Jimp.BLEND_MULTIPLY,
-      opacitySource: 1,
-      opacityDest: 1,
-    })
+    .composite(logo, X, Y)
     .writeAsync(watermarkDestination);
-
-  //   setTimeout(() => {}, 100);
 
   return [watermarkDestination, "watermarked-" + imageFilename];
 };

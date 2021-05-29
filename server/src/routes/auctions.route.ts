@@ -1,5 +1,8 @@
 import express, { NextFunction, Request, Response } from "express";
-import { deleteFile, receiveFile } from "../services/uploads.service";
+import {
+  deleteFileFromUploadDirectory,
+  receiveFile,
+} from "../services/uploads.service";
 import path from "path";
 import { uploadPublicS3, uploadPrivateS3 } from "../services/aws.service";
 import { uploadFileDirectory } from "../config/constants";
@@ -40,12 +43,14 @@ router.post(
       );
 
       // Assume successful image upload to s3, delete from local server
-      deleteFile(imageFilename);
+      deleteFileFromUploadDirectory(watermarkedFileName);
+      deleteFileFromUploadDirectory(imageFilename);
 
       const createdAuction = await createAuction(
         req,
         res,
-        s3PublicFileLocation
+        s3PublicFileLocation,
+        imageFilename
       );
 
       res.send(createdAuction);

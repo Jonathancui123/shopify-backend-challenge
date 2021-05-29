@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { check, sanitize, validationResult } from "express-validator";
 import { NativeError } from "mongoose";
 import { Auction, AuctionDocument } from "../models/Auction";
-import { UserDocument } from "../models/User";
+import { User, UserDocument } from "../models/User";
 import logger from "../util/logger";
 
 export const validateCreateAuctionInput = async (
@@ -16,7 +16,8 @@ export const validateCreateAuctionInput = async (
 export const createAuction = async (
   req: Request,
   res: Response,
-  imageSrc: string
+  imageSrc: string,
+  baseFileName: string
 ): Promise<AuctionDocument> => {
   const ownerId = (req.user as any).id;
 
@@ -26,7 +27,7 @@ export const createAuction = async (
     description: req.body.description,
     owner: ownerId,
     imageSrc,
-
+    baseFileName,
     charity: req.body.charity,
     startingBid: req.body.startingBid,
     closingDate: req.body.closingDate,
@@ -43,10 +44,21 @@ export const createAuction = async (
       throw Error("Auction with name already exists for user");
     }
     await auction.save();
+
+    User.findOneAndUpdate(
+      { _id: ownerId },
+      { $push: { auctions: auction._id } },
+      {},
+      (err, doc, result) => {
+        logger.info(err);
+        logger.info(doc);
+        logger.info(result);
+      }
+    );
   } catch (err) {
     if (err) {
       res.status(500);
-      throw Error("Database query error");
+      throw Error(err);
     }
   }
 
@@ -55,6 +67,25 @@ export const createAuction = async (
 
 export const getAllAuctions = async () => {
   const filter = {};
-  const allAuctions = await Auction.find(filter).sort("-createdAt");
+  const allAuctions = await Auction.find(filter)
+    .sort("-createdAt")
+    .populate("highestBid")
+    .populate("owner");
+
   return allAuctions;
+};
+
+export const getMyAuctions = async (userId: string) => {
+  const myAuctions = await User.findById(userId)
+    .populate({
+      path: "auctions",
+      populate: {
+        path: "bids",
+        model: "Bid",
+      },
+    })
+    .select("auctions -_id");
+  logger.info(myAuctions);
+
+  return myAuctions.auctions as unknown as Array<AuctionDocument>;
 };

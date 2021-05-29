@@ -11,7 +11,7 @@ export type UserDocument = mongoose.Document & {
   };
 
   bids: Array<mongoose.Schema.Types.ObjectId>;
-
+  auctions: Array<mongoose.Schema.Types.ObjectId>;
   comparePassword: comparePasswordFunction;
 };
 
@@ -38,6 +38,8 @@ const userSchema = new mongoose.Schema<UserDocument>(
         required: true,
       },
     },
+    bids: [{ type: mongoose.Schema.Types.ObjectId, ref: "Bid" }],
+    auctions: [{ type: mongoose.Schema.Types.ObjectId, ref: "Auction" }],
   },
   { timestamps: true }
 );
