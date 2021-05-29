@@ -26,8 +26,8 @@ jobs:
 
       - name: npm install, build, and test
         run: |
-          npm install
-          npm run build --if-present
+          # npm install
+          # npm run build --if-present
           # npm run test --if-present
         working-directory: ${{env.working-directory}}
 
@@ -37,4 +37,4 @@ jobs:
           app-name: jc-shopify-backend
           slot-name: Production
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4582934BD64447A8A69086ECDA48B937 }}
-          package: ./server/dist
+          package: ./server
