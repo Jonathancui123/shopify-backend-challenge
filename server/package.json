@@ -12,7 +12,6 @@
     "debug": "npm run build && npm run watch-debug",
     "deploy": "git add . && git commit -m Heroku && git push heroku master",
     "lint": "tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix",
-    "postinstall": "tsc && mv -i -v ./src/public dist/ && rm -v -rf src",
     "serve-debug": "nodemon --inspect dist/server.js",
     "serve": "node ./dist/server.js",
     "start": "node ./dist/server.js",

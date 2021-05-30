@@ -5,9 +5,7 @@ import app from "./app";
  * Error Handler. Provides full stack
  */
 console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
-if (process.env.NODE_ENV === "development") {
-  app.use(errorHandler());
-}
+app.use(errorHandler());
 
 /**
  * Start Express server.
