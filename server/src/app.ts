@@ -75,6 +75,9 @@ app.use(
         autoReconnect: true,
       },
     }),
+    cookie: {
+      sameSite: "none",
+    },
   })
 );
 var whitelist = [CONFIG.backendAddress, CONFIG.frontendAddress];
