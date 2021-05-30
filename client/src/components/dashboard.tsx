@@ -12,6 +12,8 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Link from "@material-ui/core/Link";
+import LoyaltyIcon from "@material-ui/icons/Loyalty";
+import ImageIcon from "@material-ui/icons/Image";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 
 import ImageZoom from "react-medium-image-zoom";
@@ -165,7 +167,9 @@ export default function Dashboard() {
               color="textPrimary"
               gutterBottom
             >
-              Biddify
+              <LoyaltyIcon fontSize="inherit" />{" "}
+              <ImageIcon fontSize="inherit" />
+              <div>Biddify</div>
             </Typography>
             <Typography
               variant="h5"
@@ -173,10 +177,19 @@ export default function Dashboard() {
               color="textSecondary"
               paragraph
             >
-              Something short and leading about the collection below—its
-              contents, the creator, etc. Make it short and sweet, but not too
-              short so folks don&apos;t simply skip over it entirely.
+              A platform to auction images in support of charitable causes!
             </Typography>
+
+            {!loggedIn && (
+              <Typography
+                variant="h6"
+                align="center"
+                color="textSecondary"
+                paragraph
+              >
+                Sign up or login to place bids and create auctions!
+              </Typography>
+            )}
             <div className={classes.heroButtons}>
               <Grid container spacing={2} justify="center">
                 <Grid item>
@@ -283,22 +296,6 @@ export default function Dashboard() {
           </Grid>
         </Container>
       </main>
-      {/* Footer */}
-      <footer className={classes.footer}>
-        <Typography variant="h6" align="center" gutterBottom>
-          Footer
-        </Typography>
-        <Typography
-          variant="subtitle1"
-          align="center"
-          color="textSecondary"
-          component="p"
-        >
-          Something here to give the footer a purpose!
-        </Typography>
-        <Copyright />
-      </footer>
-      {/* End footer */}
     </React.Fragment>
   );
 }
