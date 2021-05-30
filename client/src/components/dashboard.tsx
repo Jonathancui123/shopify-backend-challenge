@@ -266,7 +266,12 @@ export default function Dashboard() {
                         In support of <b>{auction.charity}</b>!
                       </Typography>
                       <Typography>{auction.description}</Typography>
+                      <Typography>
+                        From {auction.owner.profile.firstName}{" "}
+                        {auction.owner.profile.lastName}{" "}
+                      </Typography>
                     </CardContent>
+
                     <CardActions
                       style={{
                         display: "flex",
