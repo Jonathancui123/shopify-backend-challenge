@@ -16,7 +16,7 @@ import { useHistory } from "react-router-dom";
 import Container from "@material-ui/core/Container";
 
 import constants from "../constants";
-const { backendAddress, frontendAddress } = constants;
+const { backendAddress } = constants;
 
 function Copyright() {
   return (
