@@ -80,11 +80,13 @@ app.use(
 var whitelist = [CONFIG.backendAddress, CONFIG.frontendAddress];
 var corsOptions = {
   origin: function (origin: string, callback: any) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
+    if (
+      process.env.NODE_ENV === "production" &&
+      whitelist.indexOf(origin) === -1
+    ) {
+      callback(new Error(`${origin} - Not allowed by CORS`));
     }
+    callback(null, true);
   },
   credentials: true,
   optionsSuccessStatus: 200,

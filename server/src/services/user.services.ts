@@ -40,7 +40,12 @@ export const createUser = async (
       }
       if (existingUser) {
         // Account already exists
-        return res.status(200).send(existingUser);
+        req.logIn(existingUser, (err) => {
+          if (err) {
+            return next(err);
+          }
+          return res.status(200).send(user);
+        });
       }
       user.save((err) => {
         if (err) {
