@@ -4,14 +4,26 @@ import mongoose from "mongoose";
 import superagent from "superagent";
 import { expect } from "chai";
 import signup from "./signup";
+import { before } from "lodash";
 
-describe("Mongo connect", () => {
-  beforeAll(async () => {
+let agent = superagent.agent();
+
+const user = {
+  firstName: "Tester",
+  lastName: "McTest",
+  email: "test@gmail.com",
+};
+
+describe("Users routes", () => {
+  beforeAll((done) => {
     console.log(global);
-    await mongoose
+    mongoose
       .connect(process.env.MONGO_URL, {
         useNewUrlParser: true,
         useCreateIndex: true,
+      })
+      .then((val) => {
+        done();
       })
       .catch((err) => {
         if (err) {
@@ -19,6 +31,37 @@ describe("Mongo connect", () => {
           process.exit(1);
         }
       });
+  });
+
+  beforeEach((done) => {
+    signup(request(app), (loggedInAgent) => {
+      agent = loggedInAgent;
+      done();
+    });
+  });
+
+  describe("GET /users/currentUser", () => {
+    it("should get the user information", (done) => {
+      var req = request(app).get("/users/currentUser");
+      (agent as any).attachCookies(req);
+      req
+        .expect((res) => {
+          expect(res.body).to.contain(user);
+        })
+        .expect(200, done);
+    });
+  });
+
+  describe("GET /users/currentUser/auctions", () => {
+    it("should get a list of the users auctions", (done) => {
+      var req = request(app).get("/users/currentUser/auctions");
+      (agent as any).attachCookies(req);
+      req
+        .expect((res) => {
+          expect(res.body).to.be.empty;
+        })
+        .expect(200, done);
+    });
   });
 });
 
@@ -44,20 +87,3 @@ describe("Mongo connect", () => {
 //       .expect(302);
 //   });
 // });
-
-describe("GET /users/currentUser", () => {
-  let agent = superagent.agent();
-  beforeEach((done) => {
-    signup(request(app), (loggedInAgent) => {
-      agent = loggedInAgent;
-      done();
-    });
-  });
-  it("should get the user information", (done) => {
-    var req = request(app).get("/users/currentUser");
-    (agent as any).attachCookies(req);
-    req.expect(200, done);
-  });
-});
-
-
