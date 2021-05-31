@@ -6,19 +6,14 @@
   </a> -->
   <h1 align="center"> :label: :framed_picture: </h1>
 
-  <h3 align="center">Invaluable Images</h3>
+  <h3 align="center">Biddify</h3>
 
   <p align="center">
     A platform to auction images in support of charitable causes!
-    <!-- <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
+    <a href="https://biddify.xyz"><strong>View Demo</strong></a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a> -->
   </p>
 </p>
 
@@ -50,20 +45,14 @@
 
 <!-- [![Product Name Screen Shot][product-screenshot]](https://example.com) -->
 
-Inspired by charitable auction events, _Invaluable Images_ is a digital auction house for images where artists and photographers can specify a charitable organization that they are supporting
+Inspired by charitable auction events, _Biddify_ is a digital auction house for images where artists and photographers can specify a charitable organization that they are supporting
 
-#### (Backend) Features:
+#### Features:
 
-- Image **upload** and **storage**
-- **Create auctions** and associate with images
+- Image **upload**, **watermarking** and **access control** for original images
+- **Create auctions** and place bids for images
 - Basic **authentication** for users
 - Create/update/delete user **profiles**
-
-#### In progress:
-
-- Watermarks for image previews and access control for full-size images
-- Placing bids on auctions and determining a winner
-- Frontend client
 
 ### Built With
 
