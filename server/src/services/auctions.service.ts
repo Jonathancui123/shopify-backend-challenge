@@ -20,8 +20,6 @@ export const createAuction = async (
   baseFileName: string
 ): Promise<AuctionDocument> => {
   const ownerId = (req.user as any).id;
-
-  logger.info(req.body);
   const auction = new Auction({
     name: req.body.name,
     description: req.body.description,
@@ -48,12 +46,7 @@ export const createAuction = async (
     User.findOneAndUpdate(
       { _id: ownerId },
       { $push: { auctions: auction._id } },
-      {},
-      (err, doc, result) => {
-        logger.info(err);
-        logger.info(doc);
-        logger.info(result);
-      }
+      {}
     );
   } catch (err) {
     if (err) {
@@ -85,7 +78,5 @@ export const getMyAuctions = async (userId: string) => {
       },
     })
     .select("auctions -_id");
-  logger.info(myAuctions);
-
   return myAuctions.auctions as unknown as Array<AuctionDocument>;
 };

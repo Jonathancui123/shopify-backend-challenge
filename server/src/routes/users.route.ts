@@ -52,11 +52,9 @@ router.get(
   async (req: Request, res: Response, next: NextFunction) => {
     if (req.user) {
       const auctions = await getMyAuctions((req.user as any).id);
-      logger.info(auctions);
       await Promise.all(
         auctions.map(async (auction) => {
           auction.privateImageSrc = await getPresignedUrl(auction.baseFileName);
-          logger.info(auction.privateImageSrc);
         })
       );
       res.send(auctions);

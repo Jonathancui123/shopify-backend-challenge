@@ -4,18 +4,16 @@ import mongoose from "mongoose";
 import { expect } from "chai";
 
 describe("Auctions routes", () => {
-  beforeAll(async () => {
+  beforeAll((done) => {
     console.log(global);
-    await mongoose.connect(
-      process.env.MONGO_URL,
-      { useNewUrlParser: true, useCreateIndex: true },
-      (err) => {
-        if (err) {
-          console.error(err);
-          process.exit(1);
-        }
-      }
-    );
+    mongoose
+      .connect(process.env.MONGO_URL, {
+        useNewUrlParser: true,
+        useCreateIndex: true,
+      })
+      .then(() => {
+        done();
+      });
   });
 });
 

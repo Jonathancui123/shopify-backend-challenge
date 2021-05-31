@@ -22,12 +22,7 @@ export const createBid = async (
     auction
   ).populate("highestBid");
 
-  logger.info(bid);
-  logger.info(`Highest bid so far: ${highestBidAmount}`);
-  logger.info(`New bid: ${bidAmount}`);
-
   if (highestBidAmount && highestBidAmount > bidAmount) {
-    logger.info("here");
     throw "Invalid bid amount";
   }
 
@@ -44,8 +39,6 @@ export const createBid = async (
         if (err) {
           return next(err);
         }
-        logger.info(document);
-        logger.info(result);
         User.findOneAndUpdate(
           { _id: bidder },
           { $push: { bids: bid._id } },
@@ -54,8 +47,6 @@ export const createBid = async (
             if (err) {
               return next(err);
             }
-            logger.info(document);
-            logger.info(result);
             res.status(200).send(bid);
           }
         );
